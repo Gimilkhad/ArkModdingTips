@@ -72,6 +72,9 @@ When you equip a structure to place, the snap system immediately starts running 
 - If all the above criteria are met, then in theory the preview structure can now snap to the placing structure using any of the valid snap points that were found (based on stuff like player camera angle and cycling with Q). At this time the Point Location Offset, Rotation, etc values will dictate the position and orientation of the preview structure.
 --------------------------------
 Troubleshooting:
+
+If your structure isn't snapping to another structure, make sure the placed structure has collision.
+
 No blue snap point spheres when DebugStructures is enabled means you have your Snap Type Flags or your Snap Point Match Groups misconfigured, or your actor origins are trying to place too close together (possibly also the STRUCTURE inclusions/exclusions, but that's something I'd have to re-test).
 
 If your snap points are going to cause your preview structure's actor origin to be within 10 units of the placed structure's actor origin, the blue snap point sphere will disappear and your snap will not work at all, causing much gnashing of teeth.
