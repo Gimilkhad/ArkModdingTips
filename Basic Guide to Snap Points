@@ -24,22 +24,26 @@ Some things to understand (that personally took me a while to get):
 For example, when dealing with inclusions and exclusions, pay attention to whether they are TO inclusions/exclusions or FROM inclusions/exclusions. The TO inclusions/exclusions will only apply to snaps marked as TO snaps, and FROM inclusions/exclusions will only apply to snaps marked as FROM snaps. To put it another way, TO inclusions/exclusions will only be checked by placed structures, and FROM inclusions/exclusions will only be checked by preview structures.
 
 3. Snap Type Flags
-- Each structure has a "Snap Type Flag" value, and every snap point has a "To Point Snap Type Flags" value. These two values get compared to each other during the snapping process.
+- Each structure has a "Snap Type Flag" value, and every snap point has a "To Point Snap Type Flags" value. These two values get compared to each other during the snapping process, which is explained further down.
 
 4. Snap Point Inclusions and Exclusions
-- There are class based and tag based Inclusions/Exclusions (the class based ones have names like "Snap to Structure Types to Exclude" and take an actual class reference, while the tag based ones rely on checking a structure's "Structure Tag"
+- There are class based and tag based Inclusions/Exclusions (the class based ones have names like "Snap to Structure Types to Exclude" and take an actual class reference, while the tag based ones rely on checking a structure's "Structure Tag".
 - Exclusions work about the way you'd expect. Exclude a class or tag, and its excluded. A class's children are also excluded.
 - Inclusions however mean "Include ONLY this class/tag". They do not mean "Also Include this". If you add an Inclusion, you are automatically excluding everything else.
-- You can mix and match, using both Class and Tag inclusions/exclusions, but Orionsun has stated in the past that there are some issues you can run into if you do it wrong. Loosely quoting: "You can include a parent class & exclude a child class using the class arrays but you can't include a parent class & exclude a child tag. Once the structure's parent class has passed the class array include, it doesn't check the tags." He noted that it might be the other way around, since he hadn't looked at it in some time. Just be aware that mixing and matching classes/tags may require some extra testing.
+- You can mix and match, using both Class and Tag inclusions/exclusions, but Orionsun (Creator of the mod S+) has stated in the past that there are some issues you can run into if you do it wrong. Loosely quoting: "You can include a parent class & exclude a child class using the class arrays but you can't include a parent class & exclude a child tag. Once the structure's parent class has passed the class array include, it doesn't check the tags." He noted that it might be the other way around, since he hadn't looked at it in some time. Just be aware that mixing and matching classes/tags may require some extra testing.
 
 5. Structure Inclusions and Exclusions
-There are 2 sets of Inclusion and Exclusions settings that are OUTSIDE of the individual snap point settings. They are defaults on the structure BP itself, and they can trip you up if they're in use and you aren't aware of them. When looking at S+ source code for example, internal pipes and wires used some of these settings, and they drove me mad when I was trying to learn how internal parts snapped to things because I wasn't aware of their existence.
+There are 2 sets of Inclusion and Exclusions settings that are OUTSIDE of the individual snap point settings. They are defaults on the structure BP itself, and they can trip you up if they're in use and you aren't aware of them. When looking at S+ source for example, internal pipes and wires used some of these settings, and they drove me mad when I was trying to learn how internal parts snapped to things because I wasn't aware of their existence.
+
 They're called:
 - "Only Allow Structure Classes to/from Attach" (class based only) and 
 - "Snap to/from Structure Types/Tags to Exclude" (there are class and tag versions).
-- These supersede all other snap settings. So if you set up a pillar to EXCLUDE the base foundation class using  "Snap from Structure Types to Exclude", then that pillar will NEVER snap to any child of the base foundation, ever. If you set up the pillar to INCLUDE the base foundation using "Snap from Structure Types to Include", that pillar will only ever be allowed to snap to children of the base foundation (but will also still need to pass the usual snap system checks in addition to this)
 
-6. The Snap Type Flag and Snap Point Match Group are completely separate mechanics that have no bearing on each other whatsoever. A Snap Type Flag will never be compared to a Snap Point Match Group or vice-versa. Flags get compared to Flags, and Match Groups get compared to Match Groups. They both use Bitmasking, which means the number value you put there does not have to find an exact match, but rather a matching bit. 
+These supersede all other snap settings. So if you set up a pillar to EXCLUDE the base foundation class using  "Snap from Structure Types to Exclude", then that pillar will NEVER snap to any child of the base foundation, ever. If you set up the pillar to INCLUDE the base foundation using "Snap from Structure Types to Include", that pillar will only ever be allowed to snap to children of the base foundation and nothing else (it will also still need to pass the usual snap system checks)
+
+6. The Snap Type Flag and Snap Point Match Group are completely separate mechanics that have no bearing on each other whatsoever. A Snap Type Flag will never be compared to a Snap Point Match Group or vice-versa. Flags get compared to Flags, and Match Groups get compared to Match Groups. They both use Bitmasking, which means the number value you put there does not have to find an exact match, but rather a matching bit.
+
+Another way to put it: Snap Type Flags are for checking to see if two structures can snap to each other at all. Snap Point Match Groups are for comparing snap points to other snap points, to see which ones can snap to each other.
 
 7. Bitmasking. For example, a value of 88 will match with 8, 16, and 64. If we convert these values to binary we can see why.
 88 is 01011000
@@ -54,6 +58,7 @@ If you are trying to make your snaps work with a vanilla structure, then your Fl
 
 --------------------------------
 How the snap point matching system works (as far as I've observed/discerned from testing):
+
 When you equip a structure to place, the snap system immediately starts running its logic on tick, client-side. Then, when the preview structure gets within range of other structures, various checks start to occur. I won't pretend to know the exact order of every check, but I imagine it's like this (in descending order of priority):
 
 - Tribe/Ownership
@@ -73,17 +78,27 @@ When you equip a structure to place, the snap system immediately starts running 
 --------------------------------
 Troubleshooting:
 
-If your structure isn't snapping to another structure, make sure the placed structure has collision.
+If your structure isn't snapping to another structure:
+- Make sure the placed structure has collision. No collision means the snap system won't "see" the structure, and you probably won't see the blue snap point spheres if you have DebugStructures turned on.
+- Make sure you don't have some inclusions or exclusions hiding in the structure defaults. These would be the "Only Allow Structure Classes to/from Attach" and "Snap to/from Structure Types/Tags to Exclude" variables I mentioned previously.
 
-No blue snap point spheres when DebugStructures is enabled means you have your Snap Type Flags or your Snap Point Match Groups misconfigured, or your actor origins are trying to place too close together (possibly also the STRUCTURE inclusions/exclusions, but that's something I'd have to re-test).
+If you aren't seeing any blue snap point spheres or some are missing when DebugStructures is enabled, it could also mean:
+- Your Snap Type Flags are misconfigured
+- Your Snap Point Match Groups are misconfigured
+- Your actor origins are trying to place too close together (possibly also the STRUCTURE inclusions/exclusions, but that's something I'd have to re-test).
+--------------------------------
+Actors-too-Close
+If your snap points are going to cause your preview structure's actor origin to be within 10 units of the placed structure's actor origin, the blue snap point sphere of that particular snap on the placed structure will disappear and the snap will not work at all, causing much gnashing of teeth.
 
-If your snap points are going to cause your preview structure's actor origin to be within 10 units of the placed structure's actor origin, the blue snap point sphere will disappear and your snap will not work at all, causing much gnashing of teeth.
+The purple sphere in Debug mode represents the structure actor's origin. It doesn't always show up, and I'm not sure why (or I've forgotten). It's probably a setting in the Placement section of structures. You can figure out where your actor origins are either by drawing the spheres yourself, or just looking in the component tab to see how you've adjusted your mesh's positioning.
 
-The purple sphere in Debug mode represents the structure actor's origin. It doesn't always show up, and I'm not sure why (or I've forgotten). It's probably a setting in the Placement section of structures. You can figure out where your actor origins are either by draw the spheres yourself, or just looking at your snap point's point location offset and comparing it with your mesh's location in the components tab. If your mesh location is 0, and your snap point location offset is 0, on both structures, you're going to have issues.
+Examples of how you can cause the problem:
+- If your snap point location offset is 0 on both the TO and FROM snaps (aka the placed structure and preview structure), you'll probably encounter the issue.
+- If the rotation offsets on the TO and FROM snaps are set wrong they could be causing the preview structure to attempt to place itself inside the other structure, potentially causing the issue.
 
 The only way I know of to fix the actors-too-close issue is to change the setup of one of the structures (but this can be tricky to do if your mod is already live and people have built these structures).
 --------------------------------
-Example of actors-too-close problem, and possible solutions:
+How to fix Actors-too-Close:
 - Let's use a crop plot as an example. You made a crop plot and you want it to snap straight to the top of a square ceiling you made. Currently they don't snap because their actor origins would be within 10 units of each other.
 
 A. Adjust the crop plot
