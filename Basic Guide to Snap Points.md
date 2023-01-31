@@ -1,10 +1,14 @@
-Basic explanation of structure snap points
+Basic Explanation of Structure Snap Points
+--------------------------------
 
 My goal here is to provide a basic understanding of snap points and how the snap system works to new Structure Modders. Other modders in the Ark Modding Discord might be able to expand on this document, to explain some of the other snap settings, other tips, etc. This is meant as a starting point to get your head wrapped around the basics.
 
-I recommend looking at a structure while reading this and finding each thing I'm talking about. Perhaps later I will make a guide somewhere with pictures included.
+I recommend looking at a structure while reading this and finding each thing I'm talking about. Perhaps later I will add pictures to the guide.
+
 --------------------------------
+
 Terminology:
+--------------------------------
 FROM snap - any snap point marked as "Attach from Point" in the snap point settings
 
 TO snap - any snap point marked as "Attach to Point" in the snap point settings
@@ -14,9 +18,11 @@ Preview structure - the green ghost preview of the structure in your character's
 Placed structure - any existing structure you can attempt to snap a preview structure to
 
 Bitmask - A type of number matching that compares the individual bits that make up an integer value. This is probably a bad explanation from a pure programming point of view (I have no formal programming education), but for understanding the snap system, this should be a fairly accurate description of what is going on when we get to the Flag and Match Group stuff further down.
---------------------------------
-Some things to understand (that personally took me a while to get):
 
+--------------------------------
+
+Some things to understand (that personally took me a while to get):
+--------------------------------
 1. TO snaps are only used by your structure if it's an already placed structure in the world, and FROM snaps are only used by your structure if it's a preview in your character's hands. If a snap point is marked as both Attach from Point and Attach to Point, then that structure will use that snap point in either scenario.
 
 2. Marking a snap point as both TO and FROM is handy if you need a TO and FROM snap with the exact same location and rules. It can be confusing, because you essentially have 2 snap points in one. Some settings in a snap point entry only apply to placed structures, and some only apply to preview structures.
@@ -57,7 +63,9 @@ As you can see, 88 has three bits flipped on (the three 1 values). From the righ
 If you are trying to make your snaps work with a vanilla structure, then your Flag and Match Group values need to be compatible with the values on the vanilla parts. If you have structures that never need to snap to anything outside of your mod, and you've fully wrapped your head around bitmasking and know what you're doing, then in theory you can use any values you like to form your Flag matches and Match Group matches. There is a limit to the bitmasks though. They start at 000000000000000000000000000010 (2) and go up to 100000000000000000000000000000 (536870912).
 
 --------------------------------
+
 How the snap point matching system works (as far as I've observed/discerned from testing and researching):
+--------------------------------
 
 When you equip a structure to place, the snap system immediately starts running its logic on tick, client-side. Then, when the preview structure gets within range of other structures, various checks start to occur. I won't pretend to know the exact order of every check, but I imagine it's like this (in descending order of priority):
 
@@ -77,6 +85,7 @@ When you equip a structure to place, the snap system immediately starts running 
 - If all the above criteria are met, then in theory the preview structure can now snap to the placing structure using any of the valid snap points that were found (based on stuff like player camera angle and cycling with Q). At this time the Point Location Offset, Rotation, etc values will dictate the position and orientation of the preview structure.
 --------------------------------
 Troubleshooting:
+--------------------------------
 
 If your structure isn't snapping to another structure:
 - Make sure the placed structure has collision. No collision means the snap system won't "see" the structure, and you probably won't see the blue snap point spheres if you have DebugStructures turned on.
@@ -86,8 +95,11 @@ If you aren't seeing any blue snap point spheres or some are missing when DebugS
 - Your Snap Type Flags are misconfigured
 - Your Snap Point Match Groups are misconfigured
 - Your actor origins are trying to place too close together (possibly also the STRUCTURE inclusions/exclusions, but that's something I'd have to re-test).
+
 --------------------------------
+
 Actors-too-Close
+
 If your snap points are going to cause your preview structure's actor origin to be within 10 units of the placed structure's actor origin, the blue snap point sphere of that particular snap on the placed structure will disappear and the snap will not work at all, causing much gnashing of teeth.
 
 Another way you can cause this problem is if the rotation offsets on the TO and FROM snaps are set wrong and are rotating the preview into the placed structure, potentially placing the actors too close together. In that case you can just fix the rotation values and be good, since the snap is totally wrong and isn't supposed to be putting the preview there to begin with.
@@ -95,7 +107,9 @@ Another way you can cause this problem is if the rotation offsets on the TO and 
 The purple sphere in Debug mode represents the structure actor's origin. It doesn't always show up, and I'm not sure why (or I've forgotten). It's probably a setting in the Placement section of structures. You can figure out where your actor origins are either by drawing the spheres yourself, or just looking in the component tab to see how you've adjusted your mesh's positioning.
 
 An easy way to test if you have the problem is to just go into your FROM snap and lower it more than 10 units (20 just to make sure you get a good test result). Which will raise the position of the structure when snapping). So if it's point location Z offset is 0, set it to -20, or if it's 40, set it to 20, and so on. If the snap works after that it means the actor origins are too close together when the snaps are at their normal values.
+
 --------------------------------
+
 How to fix Actors-too-Close:
 - The only way I know of to fix the actors-too-close issue is to change the setup of one of the structures (but this can be tricky to do if your mod is already live and people have built these structures).
 - Let's use a crop plot as an example. You made a crop plot and you want it to snap straight to the top of a square ceiling you made. Currently they don't snap because their actor origins would be within 10 units of each other.
@@ -119,6 +133,7 @@ Downsides:
 I chose to do Option B with my Arkitect Structure mods, but I also did a decent amount of graphing to automatically (and very carefully) fix the locations of previously placed ceilings (remember ceilings can be on saddle platforms too, adding extra complexity). I chose this route because I was tired of encountering the actor origin issue, which I feel is a common problem and design flaw of the base ceiling setup, and decided I wanted to change mine.
 
 --------------------------------
+
 Other notes:
 IsValidSnapTo and IsValidSnapFrom structure functions
 - These are functions you can implement in your structures, that allow you to graph your own extra rules for whether one snap point can snap to another snap point, or perform other tricks.
@@ -129,7 +144,9 @@ IsValidSnapTo and IsValidSnapFrom structure functions
 There are plenty of other snap settings I didn't cover but these are the basics. I still have no clue how some of the other settings inside snap points work, and sometimes they seem to make no difference how I set them when playing with them.
 
 There are also a lot of Placement settings on the structure not covered yet in this guide, related to snap range (how far a preview structure can be from other structures before the snap logic starts running), stuff related to placing on the ground, deciding if a structure is a foundation, etc etc. I won't cover all that here, now, because frankly some of it is still a mess in my head and it comes down to just playing with settings until I get what I want. I don't mess with those settings nearly as much as the snap points, since most of the structures I've worked on are typical sized foundations, walls, etc.
+
 --------------------------------
+
 Resources:
 Something that helped me translate flags and match groups between decimal and binary values
 https://www.rapidtables.com/convert/number/decimal-to-binary.html?x=64
