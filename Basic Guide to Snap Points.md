@@ -27,7 +27,7 @@ Some things to understand (that personally took me a while to get):
 
 2. Marking a snap point as both TO and FROM is handy if you need a TO and FROM snap with the exact same location and rules. It can be confusing, because you essentially have 2 snap points in one. Some settings in a snap point entry only apply to placed structures, and some only apply to preview structures.
 
-For example, when dealing with inclusions and exclusions, pay attention to whether they are TO inclusions/exclusions or FROM inclusions/exclusions. The TO inclusions/exclusions will only apply to snaps marked as TO snaps, and FROM inclusions/exclusions will only apply to snaps marked as FROM snaps. To put it another way, TO inclusions/exclusions will only be checked by placed structures, and FROM inclusions/exclusions will only be checked by preview structures.
+   For example, when dealing with inclusions and exclusions, pay attention to whether they are TO inclusions/exclusions or FROM inclusions/exclusions. The TO inclusions/exclusions will only apply to snaps marked as TO snaps, and FROM inclusions/exclusions will only apply to snaps marked as FROM snaps. To put it another way, TO inclusions/exclusions will only be checked by placed structures, and FROM inclusions/exclusions will only be checked by preview structures.
 
 3. Snap Type Flags
 - Each structure has a "Snap Type Flag" value, and every snap point has a "To Point Snap Type Flags" value. These two values get compared to each other during the snapping process, which is explained further down.
@@ -39,17 +39,18 @@ For example, when dealing with inclusions and exclusions, pay attention to wheth
 - You can mix and match, using both Class and Tag inclusions/exclusions, but Orionsun (Creator of the mod S+) has stated in the past that there are some issues you can run into if you do it wrong. Loosely quoting: "You can include a parent class & exclude a child class using the class arrays but you can't include a parent class & exclude a child tag. Once the structure's parent class has passed the class array include, it doesn't check the tags." He noted that it might be the other way around, since he hadn't looked at it in some time. Just be aware that mixing and matching classes/tags may require some extra testing.
 
 5. Structure Inclusions and Exclusions
-There are 2 sets of Inclusion and Exclusion settings that are OUTSIDE of the individual snap point settings. They are defaults on the structure BP itself, and they can trip you up if they're in use and you aren't aware of them. When looking at S+ source for example, internal pipes and wires used some of these settings, and they drove me mad when I was trying to learn how internal parts snapped to things because I wasn't aware of their existence.
 
-They're called:
-- "Only Allow Structure Classes to/from Attach" (class based only) and 
-- "Snap to/from Structure Types/Tags to Exclude" (there are class and tag versions).
+   There are 2 sets of Inclusion and Exclusion settings that are OUTSIDE of the individual snap point settings. They are defaults on the structure BP itself, and they can trip you up if they're in use and you aren't aware of them. When looking at S+ source for example, internal pipes and wires used some of these settings, and they drove me mad when I was trying to learn how internal parts snapped to things because I wasn't aware of their existence.
 
-These supersede all other snap settings. So if you set up a pillar to EXCLUDE the base foundation class using  "Snap from Structure Types to Exclude", then that pillar will NEVER snap to any child of the base foundation, ever. If you set up the pillar to INCLUDE the base foundation using "Snap from Structure Types to Include", that pillar will only ever be allowed to snap to children of the base foundation and nothing else (it will also still need to pass the usual snap system checks)
+   They're called:
+    - "Only Allow Structure Classes to/from Attach" (class based only) and 
+    - "Snap to/from Structure Types/Tags to Exclude" (there are class and tag versions).
+
+   These supersede all other snap settings. So if you set up a pillar to EXCLUDE the base foundation class using  "Snap from Structure Types to Exclude", then that pillar will NEVER snap to any child of the base foundation, ever. If you set up the pillar to INCLUDE the base foundation using "Snap from Structure Types to Include", that pillar will only ever be allowed to snap to children of the base foundation and nothing else (it will also still need to pass the usual snap system checks)
 
 6. The Snap Type Flag and Snap Point Match Group are completely separate mechanics that have no bearing on each other whatsoever. A Snap Type Flag will never be compared to a Snap Point Match Group or vice-versa. Flags get compared to Flags, and Match Groups get compared to Match Groups. They both use Bitmasking, which means the number value you put there does not have to find an exact match, but rather a matching bit.
 
-Snap Type Flags are for checking to see if two structures can snap to each other at all. Snap Point Match Groups are for comparing snap points to other snap points, to see which ones can snap to each other.
+    Snap Type Flags are for checking to see if two structures can snap to each other at all. Snap Point Match Groups are for comparing snap points to other snap points, to see which ones can snap to each other.
 
 7. Bitmasking. For example, a value of 88 will match with 8, 16, and 64. If we convert these values to binary we can see why.
 88 is 01011000
@@ -57,10 +58,10 @@ Snap Type Flags are for checking to see if two structures can snap to each other
 16 is 00010000
 64 is 01000000
 
-As you can see, 88 has three bits flipped on (the three 1 values). From the right, it's the 4th, 5th, and 7th positions.
+    As you can see, 88 has three bits flipped on (the three 1 values). From the right, it's the 4th, 5th, and 7th positions.
 8 Has an ON bit at the 4th position too, so that's a match, even though 88 is not equal to 8. Only the value of the bit and its position matters. Only one bit has to match. Same for 16 and 64.
 
-If you are trying to make your snaps work with a vanilla structure, then your Flag and Match Group values need to be compatible with the values on the vanilla parts. If you have structures that never need to snap to anything outside of your mod, and you've fully wrapped your head around bitmasking and know what you're doing, then in theory you can use any values you like to form your Flag matches and Match Group matches. There is a limit to the bitmasks though. They start at 000000000000000000000000000010 (2) and go up to 100000000000000000000000000000 (536870912).
+    If you are trying to make your snaps work with a vanilla structure, then your Flag and Match Group values need to be compatible with the values on the vanilla parts. If you have structures that never need to snap to anything outside of your mod, and you've fully wrapped your head around bitmasking and know what you're doing, then in theory you can use any values you like to form your Flag matches and Match Group matches. There is a limit to the bitmasks though. They start at 000000000000000000000000000010 (2) and go up to 100000000000000000000000000000 (536870912).
 
 --------------------------------
 
@@ -98,9 +99,9 @@ If you aren't seeing any blue snap point spheres or some are missing when DebugS
 
 --------------------------------
 
-Actors-too-Close
+The Actors-too-Close Problem
 
-If your snap points are going to cause your preview structure's actor origin to be within 10 units of the placed structure's actor origin, the blue snap point sphere of that particular snap on the placed structure will disappear and the snap will not work at all, causing much gnashing of teeth.
+If your snap points are going to cause your preview structure's actor origin to be within 10 units of the placed structure's actor origin, the blue snap point sphere of that particular snap on the placed structure will disappear and the snap will not work at all, causing much confusion and gnashing of teeth.
 
 Another way you can cause this problem is if the rotation offsets on the TO and FROM snaps are set wrong and are rotating the preview into the placed structure, potentially placing the actors too close together. In that case you can just fix the rotation values and be good, since the snap is totally wrong and isn't supposed to be putting the preview there to begin with.
 
@@ -112,29 +113,31 @@ An easy way to test if you have the problem is to just go into your FROM snap an
 
 How to fix Actors-too-Close:
 - The only way I know of to fix the actors-too-close issue is to change the setup of one of the structures (but this can be tricky to do if your mod is already live and people have built these structures).
-- Let's use a crop plot as an example. You made a crop plot and you want it to snap straight to the top of a square ceiling you made. Currently they don't snap because their actor origins would be within 10 units of each other.
+
+Let's use a crop plot as an example. You made a crop plot and you want it to snap straight to the top of a square ceiling you made. Currently they don't snap because their actor origins would be within 10 units of each other.
 
 A. Adjust the crop plot
 - Lower the mesh of the crop plot in the components tab at least 10 units, then go to every snap point and lower its Point Location offset by 10 as well.
 - The crop plot will now snap because the FROM snaps are 10 units lower, which raises the crop plot 10 units above the ceiling, so now the actor origins are 10 units apart. The crop plot will look correct because you also lowered the mesh in the components tab to compensate for the change you made in the snap point.
 - Probably the better option of the two.
-
-Downsides: 
-- This will fix the issue only with the crop plot. Other structures you make later that need to snap the same way will potentially require similar adjustments.
-- If this structure has already been built on server, the placed ones will appear to be 10 units lower than before, and people will have to pick them up and re-place them to fix it.
+ 
+  Downsides: 
+  - This will fix the issue only with the crop plot. Other structures you make later that need to snap the same way will potentially require similar adjustments.
+  - If this structure has already been built on server, the placed ones will appear to be 10 units lower than before, and people will have to pick them up and re-place them to fix it.
 
 B. Adjust the ceiling
 - Raise the mesh of the ceiling 10 units, then go through and adjust ALL the snap points. Raise the TO snaps AND the FROM snaps by 10. This effectively makes the ceiling have an actor origin 10 units lower than before.
 
-Downsides:
-- Ceilings from other mods might not replace yours, and overlap instead. This is because the replacement logic that blows up the previous structure actually relies on checking if the actor origins are within 10 units. So by fixing the snap issue this way, you partially break that feature. Your ceilings will replace your ceilings, because they have the same modification.
-- If people have built these ceilings, they're all going to appear to shift 10 units up from where they were before. People might not like having to re-place all their ceilings.
+  Downsides:
+  - Ceilings from other mods might not replace yours, and overlap instead. This is because the replacement logic that blows up the previous structure actually relies on checking if the actor origins are within 10 units. So by fixing the snap issue this way, you partially break that feature. Your ceilings will replace your ceilings, because they have the same modification.
+  - If people have built these ceilings, they're all going to appear to shift 10 units up from where they were before. People might not like having to re-place all their ceilings.
 
 I chose to do Option B with my Arkitect Structure mods, but I also did a decent amount of graphing to automatically (and very carefully) fix the locations of previously placed ceilings (remember ceilings can be on saddle platforms too, adding extra complexity). I chose this route because I was tired of encountering the actor origin issue, which I feel is a common problem and design flaw of the base ceiling setup, and decided I wanted to change mine.
 
 --------------------------------
 
 Other notes:
+--------------------------------
 IsValidSnapTo and IsValidSnapFrom structure functions
 - These are functions you can implement in your structures, that allow you to graph your own extra rules for whether one snap point can snap to another snap point, or perform other tricks.
 - IsValidSnapTo runs on client, on tick, in every nearby placed structure.
@@ -148,6 +151,7 @@ There are also a lot of Placement settings on the structure not covered yet in t
 --------------------------------
 
 Resources:
+--------------------------------
 Something that helped me translate flags and match groups between decimal and binary values
 https://www.rapidtables.com/convert/number/decimal-to-binary.html?x=64
 
