@@ -152,8 +152,10 @@ There are also a lot of Placement settings on the structure not covered yet in t
 
 Resources:
 --------------------------------
-Something that helped me translate flags and match groups between decimal and binary values
+Something that helped me translate flags and match groups between decimal and binary values:
+
 https://www.rapidtables.com/convert/number/decimal-to-binary.html?x=64
 
-Documentation of most of the snap flags and match groups in the Ark building system, and further explanation on how the bitmasking works.
+Documentation of most of the snap flags and match groups in the Ark building system, and further explanation on how the bitmasking works:
+
 https://forums.unrealengine.com/t/reference-snap-point-flags/48937
