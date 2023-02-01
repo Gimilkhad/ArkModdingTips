@@ -52,16 +52,24 @@ Some things to understand (that personally took me a while to get):
 
     Snap Type Flags are for checking to see if two structures can snap to each other at all. Snap Point Match Groups are for comparing snap points to other snap points, to see which ones can snap to each other.
 
-7. Bitmasking. For example, a value of 88 will match with 8, 16, and 64. If we convert these values to binary we can see why.
-88 is 01011000
-8 is  00001000
-16 is 00010000
-64 is 01000000
+7. Bitmasking
 
-    As you can see, 88 has three bits flipped on (the three 1 values). From the right, it's the 4th, 5th, and 7th positions.
+   - Snap Type Flags and Snap Point Match Groups can be any value between 2 and 536870912
+   - The individual bits that make up each value in binary are compared at each position
+
+   For example, a value of 88 will match with 8, 16, and 64. If we convert these values to binary we can see why.
+
+   |Number|Binary|
+   |---|--------|
+   |88 |01011000|
+   |8  |00001000|
+   |16 |00010000|
+   |64 |01000000|
+
+   As you can see, 88 has three bits flipped on (the three 1 values). From the right, it's the 4th, 5th, and 7th positions.
 8 Has an ON bit at the 4th position too, so that's a match, even though 88 is not equal to 8. Only the value of the bit and its position matters. Only one bit has to match. Same for 16 and 64.
 
-    If you are trying to make your snaps work with a vanilla structure, then your Flag and Match Group values need to be compatible with the values on the vanilla parts. If you have structures that never need to snap to anything outside of your mod, and you've fully wrapped your head around bitmasking and know what you're doing, then in theory you can use any values you like to form your Flag matches and Match Group matches. There is a limit to the bitmasks though. They start at 000000000000000000000000000010 (2) and go up to 100000000000000000000000000000 (536870912).
+   If you are trying to make your snaps work with a vanilla structure, then your Flag and Match Group values need to be compatible with the values on the vanilla parts. If you have structures that never need to snap to anything outside of your mod, and you've fully wrapped your head around bitmasking and know what you're doing, then in theory you can use any values you like to form your Flag matches and Match Group matches. There is a limit to the bitmasks though. They start at 000000000000000000000000000010 (2) and go up to 100000000000000000000000000000 (536870912).
 
 --------------------------------
 
