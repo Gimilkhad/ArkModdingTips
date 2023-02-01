@@ -62,8 +62,9 @@ Some things to understand (that personally took me a while to get):
    For example, a value of 88 will match with 8, 16, and 64. If we convert these values to binary we can see why.
 
    |Decimal|Binary|
-   |---|--------|
+   |:-:|--------|
    |88 |01011000|
+   |||
    |8  |00001000|
    |16 |00010000|
    |64 |01000000|
