@@ -23,7 +23,7 @@ Bitmask - A type of number matching that compares the individual bits that make 
 
 --------------------------------
 
-Some things to understand (that personally took me a while to get):
+Things to understand:
 --------------------------------
 1. TO snaps are only used by your structure if it's an already placed structure in the world, and FROM snaps are only used by your structure if it's a preview in your character's hands. If a snap point is marked as both Attach from Point and Attach to Point, then that structure will use that snap point in either scenario.
 
