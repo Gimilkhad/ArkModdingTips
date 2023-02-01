@@ -71,7 +71,7 @@ Some things to understand (that personally took me a while to get):
 
    If you are trying to make your snaps work with a vanilla structure, then your Flag and Match Group values need to be compatible with the values on the vanilla parts. If you have structures that never need to snap to anything outside of your mod, and you've fully wrapped your head around bitmasking and know what you're doing, then in theory you can use any values you like to form your Flag matches and Match Group matches. 
    
-   Remember, there is a limit to the bitmasksh. They start at 000000000000000000000000000010 (2) and go up to 100000000000000000000000000000 (536870912). I'm not sure what actually happens if you type in something like 9999999999999999999999. I'm assuming it just won't work, or do something unintended.
+   Remember, there is a limit to the bitmasks. They start at 000000000000000000000000000010 (2) and go up to 100000000000000000000000000000 (536870912). I'm not sure what actually happens if you type in something like 9999999999999999999999. I'm assuming it just won't work, or do something unintended.
 
 --------------------------------
 
