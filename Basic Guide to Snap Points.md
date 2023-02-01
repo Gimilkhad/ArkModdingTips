@@ -89,11 +89,23 @@ When you equip a structure to place, the snap system immediately starts running 
 - Snap Point Match Group - if the above checks were passed, then the TO snap points on the placed structure get compared to the FROM snap points on the preview structure. If a TO snap and a FROM snap have a matching Snap Point Match Group value (remember it's comparing bits), then it proceeds to the final step. If no matches are found, I'm pretty sure the blue DebugStructure spheres don't show up (would need to test that to remind myself).
 
 - Snap Point Inclusions and Exclusions
--- For Inclusions, if a TO snap includes a class or tag, then the preview structure must be a child of that class or have that tag. If a FROM snap includes a class or tag, then the placed structure has to be a child of that class or have that tag. This is true even though the Match Group is the same.
--- For Exclusions, if a TO snap excludes a class or tag, then the preview structure can't be a child of that class or have that tag. If a FROM snap excludes a class or tag, then the placed structure can't be a child of that class or have that tag. 
--- I'm pretty sure the blue DebugStructure spheres will show up during this stage, even if the inclusions/exclusions are preventing a snap from happening.
 
-- If all the above criteria are met, then in theory the preview structure can now snap to the placing structure using any of the valid snap points that were found (based on stuff like player camera angle and cycling with Q). At this time the Point Location Offset, Rotation, etc values will dictate the position and orientation of the preview structure.
+   Inclusions
+   - If a TO snap includes a class or tag, then the *preview structure* must be a child of that class or have that tag. 
+   - If a FROM snap includes a class or tag, then the *placed structure* has to be a child of that class or have that tag. This is true even though the Match Group is the same.
+
+   Exclusions
+   - If a TO snap excludes a class or tag, then the *preview structure* can't be a child of that class or have that tag.
+   - If a FROM snap excludes a class or tag, then the *placed structure* can't be a child of that class or have that tag. Again, this is true even though the Match Group is the same.
+
+   I'm pretty sure the blue DebugStructure spheres will show up during this stage, even if the inclusions/exclusions are preventing a snap from happening.
+
+ If all the above criteria are met, then in theory the preview structure can now snap to the placed structure using any of the valid snap points that were found (based on stuff like player camera angle and cycling with Q). 
+ 
+ At this time the Point Location Offset, Rotation, etc values will dictate the position and orientation of the preview structure.
+ 
+ This is also where the "Allowed To Build" rules kick in, turning the preview structure Red or Green and displaying messages to the player to indicate if the structure can actually be placed there.
+
 --------------------------------
 Troubleshooting:
 --------------------------------
@@ -105,7 +117,8 @@ If your structure isn't snapping to another structure:
 If you aren't seeing any blue snap point spheres or some are missing when DebugStructures is enabled, it could also mean:
 - Your Snap Type Flags are misconfigured
 - Your Snap Point Match Groups are misconfigured
-- Your actor origins are trying to place too close together (possibly also the STRUCTURE inclusions/exclusions, but that's something I'd have to re-test).
+- Your actor origins are trying to place too close together
+- It might also possibly be the STRUCTURE inclusions/exclusions, but that's something I'd have to re-test
 
 --------------------------------
 
@@ -154,9 +167,15 @@ IsValidSnapTo and IsValidSnapFrom structure functions
 - IsValidSnapFrom works just like IsValidSnapTo except it runs on the preview structure. It can be tricky to use depending on what you're doing. If you are setting any variables on the preview structure during placement, those values are lost when placement occurs because the preview structure is destroyed and a new copy is created on the server.
 - Both functions can run multiple times in the server-side of the structures during a structure placement event.
 
+IsAllowedToBuild and IsAllowedToBuildEx
+- These are functions you can implement in your structures, that allow you to graph your own extra rules for whether a structure is allowed to place at the current location. It isn't *directly* related to snapping, but it can be useful to override the built-in placement rules if need to.
+- These functions also fire on tick on the client side, and at least once during placement on server (potentially multiple times on server)
+- If you use the "Ex" version, you have to enable it in the structure defaults
+- It seems you can use both at the same time, but I don't see why anyone would want to. It would likely cause problems to use both, especially if you're doing different things in each.
+
 There are plenty of other snap settings I didn't cover but these are the basics. I still have no clue how some of the other settings inside snap points work, and sometimes they seem to make no difference how I set them when playing with them.
 
-There are also a lot of Placement settings on the structure not covered yet in this guide, related to snap range (how far a preview structure can be from other structures before the snap logic starts running), stuff related to placing on the ground, deciding if a structure is a foundation, etc etc. I won't cover all that here, now, because frankly some of it is still a mess in my head and it comes down to just playing with settings until I get what I want. I don't mess with those settings nearly as much as the snap points, since most of the structures I've worked on are typical sized foundations, walls, etc.
+There are also a lot of Placement settings on the structure not covered yet in this guide. I'm referring to all the settings under the "Placement" section in the structure defaults. Stuff like snap range (how far a preview structure can be from other structures before the snap logic starts running), stuff related to placing on the ground, deciding if a structure is a foundation, etc etc. I won't cover all that here, now, because frankly some of it is still a mess in my head and it comes down to just playing with settings until I get what I want. I don't mess with those settings nearly as much as the snap points, since most of the structures I've worked on are typical sized foundations, walls, etc.
 
 --------------------------------
 
