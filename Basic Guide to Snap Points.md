@@ -75,12 +75,10 @@ Things to understand:
    If you are trying to make your snaps work with a vanilla structure, then your Flag and Match Group values need to be compatible with the values on the vanilla parts. If you have structures that never need to snap to anything outside of your mod, and you've fully wrapped your head around bitmasking and know what you're doing, then in theory you can use any values you like to form your Flag matches and Match Group matches. 
    
    Remember, there is a limit to the bitmasks. They start at 000000000000000000000000000010 (2) and go up to 100000000000000000000000000000 (536870912). I'm not sure what actually happens if you type in something like 9999999999999999999999. I'm assuming it just won't work, or do something unintended.
-   
-8. Snap Points can be changed at any time, even in a mod that is already live. It will not cause the loss of any existing structures.
-
-9. Snap Points and Structure Linking are two different things. 
-   - Snap Points determine where the preview structure is going to go. 
-   - Structure Linking is what actually "glues" structures together and determines things like when a structure is supported or not, or when two pipes/wires are connected or not.
+  
+8. Snap Points and Structure Linking are two different things. 
+   - Snap Points determine where the preview structure is going to go on a placed structure. 
+   - Structure Linking is what actually "glues" placed structures together and determines things like when a structure is supported or not, or when two pipes/wires are connected or not.
 
 --------------------------------
 
@@ -193,6 +191,7 @@ Tips:
 
 - Type DebugStructures in the console in PIE (Play in Editor) to see the blue spheres I mention in the guide.
 - You can edit snap points while PIE is running (as well as lots of other stuff). When setting up or debugging snap points, you can place a structure, equip another structure near it, then play with snap points in the structure defaults to see the changes in real time.
+- Snap Points can be changed at any time, even in a mod that is already live. It will not cause the loss of any existing structures. The Snap Point system is only ever used when a player is currently placing a structure.
 
 Resources:
 --------------------------------
