@@ -182,6 +182,12 @@ There are also a lot of Placement settings on the structure not covered yet in t
 
 --------------------------------
 
+Tips:
+--------------------------------
+
+- Type DebugStructures in the console in PIE (Play in Editor) to see the blue spheres I mention in the guide.
+- You can edit snap points while PIE is running (as well as lots of other stuff). When setting up or debugging snap points, you can place a structure, equip another structure near it, then play with snap points in the structure defaults to see the changes in real time.
+
 Resources:
 --------------------------------
 Something that helped me translate flags and match groups between decimal and binary values:
