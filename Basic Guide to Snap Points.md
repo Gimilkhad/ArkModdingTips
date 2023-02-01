@@ -3,6 +3,8 @@ Basic Explanation of Structure Snap Points
 
 My goal here is to provide a basic understanding of snap points and how the snap system works to new Structure Modders. Other modders in the Ark Modding Discord might be able to expand on this document, to explain some of the other snap settings, other tips, etc. This is meant as a starting point to get your head wrapped around the basics.
 
+I learned by trial and error, and piecing together info from various locations, plumbing the depths of old Discord comments and forum posts. I wanted to gather it all together into one place.
+
 I recommend looking at a structure while reading this and finding each thing I'm talking about. Perhaps later I will add pictures to the guide.
 
 --------------------------------
