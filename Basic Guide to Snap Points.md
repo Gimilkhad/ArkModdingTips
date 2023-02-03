@@ -111,7 +111,7 @@ When you equip a structure to place, the snap system immediately starts running 
  
  At this time the Point Location Offset, Rotation, etc values will dictate the position and orientation of the preview structure.
  
- This is also where the "Allowed To Build" rules kick in, turning the preview structure Red or Green and displaying messages to the player to indicate if the structure can actually be placed there.
+ Somewhere during the placement process, the "Allowed To Build" system runs, which is what turns the preview structure Red or Green and displays messages to the player to indicate if the structure can actually be placed there. As far as I know it does not by default influence snap rules. It's more related to placement rules, like preventing placement inside terrain or other structures (Obstructed), too close to an enemy base, too high above ground, etc.
 
 --------------------------------
 Troubleshooting:
