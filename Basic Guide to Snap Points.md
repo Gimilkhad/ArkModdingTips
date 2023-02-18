@@ -33,6 +33,7 @@ Things to understand:
 
 3. Snap Type Flags
 - Each structure has a "Snap Type Flag" value, and every snap point has a "To Point Snap Type Flags" value. These two values get compared to each other during the snapping process, which is explained further down.
+- The "To Point Snap Type Flags" and "To Point Snap Type Exclude Flags" values in each snap point only do anything if that snap point is set up to be a TO snap, and only if it is currently functioning as a TO snap. If it's a FROM snap, the values entered there do nothing. If it's a combination TO and FROM snap, the snap point must be functioning as a TO snap during a snap event, or again, the values do nothing. Just something to keep in mind. 
 
 4. Snap Point Inclusions and Exclusions
 - There are class based and tag based Inclusions/Exclusions (the class based ones have names like "Snap to Structure Types to Exclude" and take an actual class reference, while the tag based ones rely on checking a structure's "Structure Tag").
@@ -91,7 +92,7 @@ When you equip a structure to place, the snap system immediately starts running 
 
 - Structure inclusions/exclusions (Only Allow Structure Classes to/from Attach, and Snap to/from Structure Types/Tags to Exclude)
 
-- Snap Type Flags - the preview structure will check each of its snap points, looking at the "To Point Snap Type Flags" values in those snap points, to see if any of them match the "Snap Type Flag" value of any nearby structures (remember it's comparing bits). If no matches are found with a placed structure, you won't see any blue DebugStructure spheres on that placed structure, and your preview structure will be unable to snap to it.
+- Snap Type Flags - The Snap Type Flag of the preview structure will be compared to the "To Point Snap Type Flags" value in the snap points of every nearby placed structure, to see if if there is a match (remember it's comparing bits). If no matches are found within a placed structure, you won't see any blue DebugStructure spheres on that placed structure, and your preview structure will be unable to snap to it.
 
 - Snap Point Match Group - if the above checks were passed, then the TO snap points on the placed structure get compared to the FROM snap points on the preview structure. If a TO snap and a FROM snap have a matching Snap Point Match Group value (remember it's comparing bits), then it proceeds to the final step. If no matches are found, I'm pretty sure the blue DebugStructure spheres don't show up (would need to test that to remind myself).
 
@@ -116,6 +117,13 @@ When you equip a structure to place, the snap system immediately starts running 
 --------------------------------
 Troubleshooting:
 --------------------------------
+First of all, the DebugStructures console command is a must when troubleshooting snap points. You're blind without it. Turn it on when troubleshooting snap points.
+
+Second, when DebugStructures is enabled, you'll notice that a working snap point is indicated by the preview structure moving to the correct position, and a lighter blue ball appears where the snap was made to indicate success (it also displays the names and indexes of the two snap points that made a successful connection).
+
+If you see the lighter blue ball appear, but your structure doesn't move to a new position:
+- It's possible you need to enable "Snap Force No Ground Requirement" in the TO snap point on the placed structure. 
+- I encountered this recently with my square roof caps and pillars. I wanted to make pillars snap downward from each corner of the roof cap, and I was seeing the light blue ball, but the pillar was not actually moving to position. The roof cap was too high above the ground, and the pillar apparently required touching the ground before it would snap. I went into the roof cap, to the four TO snaps I set up for pillars, and enabled that option in each to force no ground requirement. This allowed the pillars to snap even though they were too high to touch the ground.
 
 If your structure isn't snapping to another structure:
 - Make sure the placed structure has collision. No collision means the snap system won't "see" the structure, and you probably won't see the blue snap point spheres if you have DebugStructures turned on.
