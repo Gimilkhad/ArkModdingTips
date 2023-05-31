@@ -81,6 +81,11 @@ Things to understand:
    - Snap Points determine where the preview structure is going to go on a placed structure. 
    - Structure Linking is what actually "glues" placed structures together and determines things like when a structure is supported or not, or when two pipes/wires are connected or not.
 
+9. Allow Snap Rotation (and Point Rotation Offset)
+   - Allow Snap Rotation to Structures with Tag: a default setting on structures. Only placing structures will use this setting.
+   - Point Rot Offset: a setting inside individual snap points. Only affects FROM snap points, aka, snap points used by placing structures.
+   - Example: On a square ceiling, if "Allow Snap Rotation to Structures with Tag" is set include the "TriangleCeiling" structure tag. When a square ceiling is in placement mode, snapping to a triangle ceiling, the rotation value of the FROM snap on the square ceiling will rotate the square ceiling, pivoting the square ceiling around the point where the FROM snap meets the TO snap of the Triangle ceiling.
+
 --------------------------------
 
 How the snap point matching system works (as far as I've observed/discerned from testing and researching):
