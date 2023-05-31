@@ -83,8 +83,8 @@ Things to understand:
 
 9. Allow Snap Rotation (and Point Rotation Offset)
    - Allow Snap Rotation to Structures with Tag: a default setting on structures. Only placing structures will use this setting.
-   - Point Rot Offset: a setting inside individual snap points. Only affects FROM snap points, aka, snap points used by placing structures.
-   - Example: On a square ceiling, if "Allow Snap Rotation to Structures with Tag" is set include the "TriangleCeiling" structure tag. When a square ceiling is in placement mode, snapping to a triangle ceiling, the rotation value of the FROM snap on the square ceiling will rotate the square ceiling, pivoting the square ceiling around the point where the FROM snap meets the TO snap of the Triangle ceiling.
+   - Point Rot Offset: a setting inside individual snap points. Affects both FROM and TO snaps, but only if the placing structure has Allow Snap Rotation set up correctly.
+   - Example: On a square ceiling, if "Allow Snap Rotation to Structures with Tag" is set include the "TriangleCeiling" structure tag. When a square ceiling is in placement mode, snapping to a triangle ceiling, the rotation value of the FROM snap on the square ceiling will rotate the square ceiling, pivoting the square ceiling around the point where the FROM snap meets the TO snap of the Triangle ceiling. At the same time, the rotation value of the TO snap on the triangle ceiling will ALSO rotate the square ceiling. This means you have to add the rotation values of the FROM and TO snaps to know how much the square ceiling will actually be rotated.
 
 --------------------------------
 
