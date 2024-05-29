@@ -92,7 +92,7 @@ Things to understand:
   
 10. Snap Points and Structure Linking are two different things. 
    - Snap Points determine where the preview structure is going to go on a placed structure. 
-   - Structure Linking is what actually "glues" placed structures together and determines things like when a structure is supported or not, or when two pipes/wires are connected or not.
+   - Structure Linking is what actually "glues" placed structures together and determines things like when a structure is supported or not, or when two pipes/wires are connected or not. I know that at least some Snap Point settings are checked during the Structure Linking process (like "Invalid for Structure Linking"), but other than that I don't know how the game decides what structures get linked to what. That code is unavailable to modders. My best guess is the linking process does little server-side overlap checks around the snap point that was used during placement, and links to whatever structures it found (with exceptions).
 
 11. Allow Snap Rotation (and Point Rotation Offset)
    - Allow Snap Rotation: if checked, will make it so this structure is always allowed to be rotated by the rotation values of snap points. When snapping to any structure. All the time.
