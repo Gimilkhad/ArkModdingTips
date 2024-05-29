@@ -231,7 +231,7 @@ Something that helped me translate flags and match groups between decimal and bi
 
 https://www.rapidtables.com/convert/number/decimal-to-binary.html?x=64
 
-Documentation of most of the snap flags and match groups in Ark Survival Ascended:
+Documentation of most of the snap flags and match groups in Ark Survival Ascended, courtesy of Orionsun:
 
 https://docs.google.com/document/d/e/2PACX-1vTa2FzbYhjtDwJoDbIjTd1bMNUOvhj9zn38GyGTV7pVVMq7sWHRJAkP84oGSk8-Q18iRTXz8KwoStEt/pub
 
