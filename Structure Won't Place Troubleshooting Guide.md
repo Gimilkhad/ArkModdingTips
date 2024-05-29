@@ -1,3 +1,5 @@
+While this troubleshooting list is primarily aimed at ASA, some of it will still apply to ASE.
+
 Symptoms: 
 - You try to equip your structure but using the item does nothing. No structure appears.
 - You have multiple structures on an item, but only some show up.
