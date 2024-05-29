@@ -215,6 +215,9 @@ https://www.rapidtables.com/convert/number/decimal-to-binary.html?x=64
 Documentation of most of the snap flags and match groups in the Ark Survival Evolved building system, and further explanation on how the bitmasking works:
 
 https://forums.unrealengine.com/t/reference-snap-point-flags/48937
+
 NOTE - THIS IS RELATED TO ASE. FOR ASA SNAP FLAGS, USE ORIONSUN'S GOOGLE DOCS:
+
 https://docs.google.com/document/d/e/2PACX-1vTa2FzbYhjtDwJoDbIjTd1bMNUOvhj9zn38GyGTV7pVVMq7sWHRJAkP84oGSk8-Q18iRTXz8KwoStEt/pub
+
 https://docs.google.com/document/d/e/2PACX-1vRmUGRfb3knh8s0OB6tRElZO_xvGu8ykqF4hPZTecULJWdnhhSwWSQqDKFtLJsVcYTf_LqooX3HDRCT/pub
