@@ -9,10 +9,10 @@ I recommend looking at a structure while reading this and finding each thing I'm
 
 Tips:
 --------------------------------
-- Any time you work on snap points, do it while running PIE (pressing play in the editor) and enable the DebugStructures console command so you can see what's going on. Run PIE, place some structures, equip the structure you're going to mess with, DebugStructures so you can see the snap points. Then keep PIE visible while you mess with snap points. Personally I changed the editor to run PIE in a separate window and then put it on my second screen.
+- Type DebugStructures in the console in PIE (Play in Editor) to see the blue spheres I mention in the guide. The spheres show you where a snap point is. In ASA, DebugStructures will not draw spheres for every snap point on a structure like it did in ASE. It only will only draw them within a short range and only if the snap points are usable at that moment.
 - You can edit snap points while PIE is running (as well as lots of other stuff). When setting up or debugging snap points, you can place a structure, equip another structure near it, then play with snap points in the structure defaults to see the changes in real time.
-- Do not use the Compile button when PIE is running. You can sometimes get away with it but a lot of the time it will crash your devkit. Make your snap point edits and when you're done, stop PIE, Compile, and save.
-- Snap Points can be changed at any time, even in a mod that is already live. It will not cause the loss of any existing structures. The Snap Point system is only ever used when a player is currently placing a structure.
+- Do not use the Compile button when PIE is running. You can sometimes get away with it but a lot of the time it will crash your devkit. Make your snap point edits and when you're done, stop PIE, compile, and save.
+- Snap Points can be changed at any time, even in a mod that is already live. It will not cause the loss of any existing structures, nor move them. The Snap Point system is only ever used when a player is currently placing a structure.
 
 --------------------------------
 
