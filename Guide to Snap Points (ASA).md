@@ -9,7 +9,10 @@ I recommend looking at a structure while reading this and finding each thing I'm
 
 Tips:
 --------------------------------
-Any time you work on snap points, do it while running PIE (pressing play in the editor) and enable the DebugStructures console command so you can see what's going on. Run PIE, place some structures, equip the structure you're going to mess with, DebugStructures so you can see the snap points. Then keep PIE visible while you mess with snap points. Personally I changed the editor to run PIE in a separate window and then put it on my second screen.
+- Any time you work on snap points, do it while running PIE (pressing play in the editor) and enable the DebugStructures console command so you can see what's going on. Run PIE, place some structures, equip the structure you're going to mess with, DebugStructures so you can see the snap points. Then keep PIE visible while you mess with snap points. Personally I changed the editor to run PIE in a separate window and then put it on my second screen.
+- You can edit snap points while PIE is running (as well as lots of other stuff). When setting up or debugging snap points, you can place a structure, equip another structure near it, then play with snap points in the structure defaults to see the changes in real time.
+- Do not use the Compile button when PIE is running. You can sometimes get away with it but a lot of the time it will crash your devkit. Make your snap point edits and when you're done, stop PIE, Compile, and save.
+- Snap Points can be changed at any time, even in a mod that is already live. It will not cause the loss of any existing structures. The Snap Point system is only ever used when a player is currently placing a structure.
 
 --------------------------------
 
@@ -99,7 +102,6 @@ Concepts:
 10. Snap Points and Structure Linking are two different things. 
    - Snap Points determine where the preview structure is going to go on a placed structure. That's basically it. Once a structure is placed it doesn't care about snap points anymore unless a player is trying to snap something to it.
    - Structure Linking is what actually "glues" placed structures together and determines things like when a structure is supported or not, or when two pipes/wires are connected or not. I know that at least some Snap Point settings are checked during the Structure Linking process (like "Invalid for Structure Linking"), but other than that I don't know how the game decides what structures get linked to what. That code is unavailable to modders. My best guess is the linking process does little server-side overlap checks around the snap point that was used during placement, and links to whatever structures it found (with exceptions).
-   - The point is that you can change snap points at any time and you don't have to worry about existing structures moving or disappearing from people's bases.
 
 11. Allow Snap Rotation (and Point Rotation Offset)
    - Allow Snap Rotation: if checked, will make it so this structure is always allowed to be rotated by the rotation values of snap points. When snapping to any structure. All the time. This setting must be configured in the placing structure for it to do anything.
@@ -224,13 +226,6 @@ There are plenty of other snap settings I didn't cover but these are the basics.
 There are also a lot of Placement settings on the structure not covered yet in this guide. I'm referring to all the settings under the "Placement" section in the structure defaults. Stuff like snap range (how far a preview structure can be from other structures before the snap logic starts running), stuff related to placing on the ground, deciding if a structure is a foundation, etc etc. I won't cover all that here, now, because frankly some of it is still a mess in my head and it comes down to just playing with settings until I get what I want. I don't mess with those settings nearly as much as the snap points, since most of the structures I've worked on are typical sized foundations, walls, etc.
 
 --------------------------------
-
-Tips:
---------------------------------
-
-- Type DebugStructures in the console in PIE (Play in Editor) to see the blue spheres I mention in the guide.
-- You can edit snap points while PIE is running (as well as lots of other stuff). When setting up or debugging snap points, you can place a structure, equip another structure near it, then play with snap points in the structure defaults to see the changes in real time.
-- Snap Points can be changed at any time, even in a mod that is already live. It will not cause the loss of any existing structures. The Snap Point system is only ever used when a player is currently placing a structure.
 
 Resources:
 --------------------------------
