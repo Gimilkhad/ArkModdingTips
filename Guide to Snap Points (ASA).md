@@ -7,6 +7,12 @@ I recommend looking at a structure while reading this and finding each thing I'm
 
 --------------------------------
 
+Tips:
+--------------------------------
+Any time you work on snap points, do it while running PIE (pressing play in the editor) and enable the DebugStructures console command so you can see what's going on. Run PIE, place some structures, equip the structure you're going to mess with, DebugStructures so you can see the snap points. Then keep PIE visible while you mess with snap points. Personally I changed the editor to run PIE in a separate window and then put it on my second screen.
+
+--------------------------------
+
 Terminology:
 --------------------------------
 FROM snap - any snap point marked as "Attach from Point" in the snap point settings
@@ -142,7 +148,7 @@ When you equip a structure to place, the snap system immediately starts running 
 --------------------------------
 Troubleshooting:
 --------------------------------
-First of all, the DebugStructures console command is a must when troubleshooting snap points. You're blind without it. Turn it on when troubleshooting snap points.
+First of all, the DebugStructures console command is a must when troubleshooting snap points. You're blind without it. Turn it on any time you're troubleshooting snap points.
 
 Second, when DebugStructures is enabled, you'll notice that a working snap point is indicated by the preview structure moving to the correct position, and a lighter blue ball appears where the snap was made to indicate success (it also displays the names and indexes of the two snap points that made a successful connection).
 
