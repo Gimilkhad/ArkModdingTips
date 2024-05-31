@@ -31,11 +31,11 @@ Concepts:
 
 3. Snap Type Flags
 - Each structure has a "Snap Type Flag" value, which is a special value used to represent what general type of structure part that structure is. Foundations are 2, ceilings are 4, walls are 8, and so on.
-- Every snap point has a "To Point Snap Type Flags" value. This value gets compared to a Snap Type Flag using "Bitmasking" during the snapping process, which is explained further down.
-- The "To Point Snap Type Flags" and "To Point Snap Type Exclude Flags" values in each snap point only do anything if that snap point is set up to be a TO snap, and only if it is currently functioning as a TO snap. If it's a FROM snap, the values entered there do nothing. If it's a combination TO and FROM snap, the snap point must be functioning as a TO snap during a snap event, or again, the values do nothing. Just something to keep in mind.
+- Every snap point has a "To Point Snap Type Flags" value. During the snapping process this value gets compared to a corresponding Snap Type Flag value in snap points using "Bitmasking", which is explained further down.
+- The "To Point Snap Type Flags" and "To Point Snap Type Exclude Flags" values in a snap point only do anything if that snap point is set up to be a TO snap, and only if it is currently functioning as a TO snap. If it's a FROM snap, the values entered there do nothing. If it's a combination TO and FROM snap, the snap point must be functioning as a TO snap during a snap event or, again, the values do nothing. Just something to keep in mind.
 
 4. Extra Structure Snap Type Flags
-- In addition to the main Snap Type Flag, ASA also added 3 "Extra" flags, stored as a vector. X, Y, and Z can all have a number value which will further "describe" what a structure is to the game's structure system.
+- In addition to the main Snap Type Flag, ASA also added 3 "Extra" snap type flags, stored as a vector. X, Y, and Z can all have a number value which will further "describe" what a structure is to the game's structure system.
 - For example the main Snap Type Flag of a square ceiling is 4, and if you look at the X value of the Extra Snap Type Flags, it says 2. The 4 tells the game it's a ceiling, and the 2 tells the game it's a square ceiling. If you look at a Triangle ceiling you'll see that the values are 4 and 4. Snap Type Flag 4 means it's a ceiling, and Extra Structure Snap Type Flag X=4 means it's a triangle ceiling.
 - These numbers could theoretically be anything, but unless you want to change your entire snap setup and break compatibility with vanilla structures, you generally don't want to change any of these values.
 - Y and Z are for getting even more specific. Wildcard doesn't use Z yet, and I can't think of any actual examples of them using Y. To avoid confusion I won't make up any examples. Just know that the main Snap Type Flag is the broadest description and X, Y, Z are used to get more and more specific.
@@ -43,7 +43,7 @@ Concepts:
 - "Extra Structure Snap Type Flags" on the structure correspond with "Extra Snap Type Flags" in snap points. They're slightly different names, but don't allow that to confuse you. They go together.
 
 5. Snap Point Inclusions and Exclusions
-- There are two kinds of Inclusions and Exclusions, and three kinds of Exclusions
+- There are two kinds of Inclusions, and three kinds of Exclusions, found in snap points.
 - You can Exclude structures from snapping using the To Point Snap Type Exclude Flags (or the Extra Snap Type Exclude Flags). These only work in TO snaps, meaning only placed structures will check this.
 - You can also Exclude structures from snapping using class based and tag based Inclusions/Exclusions (the class based ones have names like "Snap to Structure Types to Exclude" and take an actual class reference, while the tag based ones rely on checking a structure's "Structure Tag").
 - Inclusions can only be done via Class or Tag.
@@ -62,7 +62,7 @@ Concepts:
    These supersede all other snap settings. So if you set up a pillar to EXCLUDE the base foundation class using  "Snap from Structure Types to Exclude", then that pillar will NEVER snap to any child of the base foundation, ever. If you set up the pillar to INCLUDE the base foundation using "Snap from Structure Types to Include", that pillar will only ever be allowed to snap to children of the base foundation and nothing else (it will also still need to pass the usual snap system checks)
 
 7. Snap Point Match Groups
-- These values have nothing to do with Snap Type Flags. Snap Type Flags are for checking to see if two structures can snap to each other at all. Snap Point Match Groups are for comparing snap points to other snap points, to see which ones can snap to each other.
+- These values have nothing to do with Snap Type Flags. Snap Type Flags are for checking to see if two structures can snap to each other at all. Snap Point Match Groups are for comparing snap points to other snap points, to see which ones can snap together.
 - A Snap Type Flag will never be compared to a Snap Point Match Group or vice-versa. Flags get compared to Flags, and Match Groups get compared to Match Groups. They both use Bitmasking, which means the number value you put there does not have to find an exact match, but rather a matching bit.
 
 8. Extra Snap Point Match Group
@@ -84,20 +84,21 @@ Concepts:
    |64 |01000000|
 
    As you can see, 88 has three bits flipped on (the three 1 values). From the right, it's the 4th, 5th, and 7th positions.
-8 Has an ON bit at the 4th position too, so that's a match, even though 88 is not equal to 8. Only the value of the bit and its position matters. Only one bit has to match. Same for 16 and 64.
+8 Has an ON bit at the 4th position too, so that's a match, even though 88 is not equal to 8. Only the value of the bit and its position matters. Only one bit has to match. 16 has a match at the 5th position, and 64 has a match at the 7th position.
 
-   If you are trying to make your snaps work with a vanilla structure, then your Flag and Match Group values need to be compatible with the values on the vanilla parts. If you have structures that never need to snap to anything outside of your mod, and you've fully wrapped your head around bitmasking and know what you're doing, then in theory you can use any values you like to form your Flag matches and Match Group matches. 
+   If you are trying to make your snaps work with a vanilla structure, then your Flag and Match Group values need to be compatible with the values on the vanilla parts. If you have structures that never need to snap to anything outside of your mod, and you've fully wrapped your head around bitmasking and know what you're doing, then in theory you can use any values you like to form your Flag matches and Match Group matches. Not that anyone in their right mind should do that.
    
    Remember, there is a limit to the bitmasks. They start at 000000000000000000000000000010 (2) and go up to 100000000000000000000000000000 (536870912). I'm not sure what actually happens if you type in something like 9999999999999999999999. I'm assuming it just won't work, or do something unintended.
   
 10. Snap Points and Structure Linking are two different things. 
-   - Snap Points determine where the preview structure is going to go on a placed structure. 
+   - Snap Points determine where the preview structure is going to go on a placed structure. That's basically it. Once a structure is placed it doesn't care about snap points anymore unless a player is trying to snap something to it.
    - Structure Linking is what actually "glues" placed structures together and determines things like when a structure is supported or not, or when two pipes/wires are connected or not. I know that at least some Snap Point settings are checked during the Structure Linking process (like "Invalid for Structure Linking"), but other than that I don't know how the game decides what structures get linked to what. That code is unavailable to modders. My best guess is the linking process does little server-side overlap checks around the snap point that was used during placement, and links to whatever structures it found (with exceptions).
+   - The point is that you can change snap points at any time and you don't have to worry about existing structures moving or disappearing from people's bases.
 
 11. Allow Snap Rotation (and Point Rotation Offset)
-   - Allow Snap Rotation: if checked, will make it so this structure is always allowed to be rotated by the rotation values of snap points. When snapping to any structure. All the time.
+   - Allow Snap Rotation: if checked, will make it so this structure is always allowed to be rotated by the rotation values of snap points. When snapping to any structure. All the time. This setting must be configured in the placing structure for it to do anything.
    - Allow Snap Rotation to Structures with Tag: allows you to enable rotation in more controlled, specific snap situations instead of "all the time". This setting must be configured in the placing structure for it to do anything.
-   - Point Rot Offset: a setting inside individual snap points. Affects both FROM and TO snaps, but only if the placing structure has Allow Snap Rotation set up correctly.
+   - Point Rot Offset: a setting inside snap points. Affects both FROM and TO snaps, but only if the placing structure has Allow Snap Rotation set up correctly.
    - Example: On a square ceiling, "Allow Snap Rotation to Structures with Tag" is set include the "TriangleCeiling" structure tag. When a square ceiling is in placement mode, snapping to a triangle ceiling, the rotation value of the FROM snap on the square ceiling will rotate the square ceiling, pivoting the square ceiling *around the point where the FROM snap meets the TO snap of the Triangle ceiling*. At the same time, the rotation value of the TO snap on the triangle ceiling will ALSO rotate the square ceiling. This means you have to add the rotation values of the FROM and TO snaps to know how much the square ceiling will actually be rotated.
 
 --------------------------------
