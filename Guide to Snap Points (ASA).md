@@ -84,7 +84,7 @@ Concepts:
    |64 |01000000|
 
    As you can see, 88 has three bits flipped on (the three 1 values). From the right, it's the 4th, 5th, and 7th positions.
-8 Has an ON bit at the 4th position too, so that's a match, even though 88 is not equal to 8. Only the value of the bit and its position matters. Only one bit has to match. 16 has a match at the 5th position, and 64 has a match at the 7th position.
+8 Has an ON bit at the 4th position too, so that's a match, even though 88 is not equal to 8. Only the value of the bit and its position matters. Only one bit has to match. 16 matches with 88 at the 5th position, and 64 matches with 88 at the 7th position.
 
    If you are trying to make your snaps work with a vanilla structure, then your Flag and Match Group values need to be compatible with the values on the vanilla parts. If you have structures that never need to snap to anything outside of your mod, and you've fully wrapped your head around bitmasking and know what you're doing, then in theory you can use any values you like to form your Flag matches and Match Group matches. Not that anyone in their right mind should do that.
    
