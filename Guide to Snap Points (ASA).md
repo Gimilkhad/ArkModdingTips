@@ -110,6 +110,10 @@ Concepts:
    - Point Rot Offset: a setting inside snap points. Affects both FROM and TO snaps, but only if the placing structure has Allow Snap Rotation set up correctly.
    - Example: On a square ceiling, "Allow Snap Rotation to Structures with Tag" is set include the "TriangleCeiling" structure tag. When a square ceiling is in placement mode, snapping to a triangle ceiling, the rotation value of the FROM snap on the square ceiling will rotate the square ceiling, pivoting the square ceiling *around the point where the FROM snap meets the TO snap of the Triangle ceiling*. At the same time, the rotation value of the TO snap on the triangle ceiling will ALSO rotate the square ceiling. This means you have to add the rotation values of the FROM and TO snaps to know how much the square ceiling will actually be rotated.
 
+12. Structure Tag and Secondary Structure Tags
+    - Structure Tag is a label you give to a set of structure parts of the same shape (for example Floor_Triangle, or Wall_Sloped_Left). The Structure Tag is checked by at least 3 systems in the game, maybe more: Snap point Inclusions/Exclusions, Allow Snap Rotation for Tags (and the "Force" version), and the new structure skin system (that's how Frontier knows what model to use when you place it on a part. It checks the Structure Tag).
+    - Secondary Structure Tags, as far as I know, are only checked by the Snap Point Inclusion/Exclusion arrays. So if for some reason you need a structure to have multiple Structure Tags for the purposes of snap point inclusion/exclusion, you can put the extra tags in this array.
+
 --------------------------------
 
 How the snap point matching system works (as far as I can tell):
@@ -132,13 +136,13 @@ When you equip a structure to place, the snap system immediately starts running 
 - Snap Point Inclusions and Exclusions
 
    Inclusions
-   - If a TO snap includes a class or tag, then the *preview structure* must be a child of that class or have that tag. 
-   - If a FROM snap includes a class or tag, then the *placed structure* has to be a child of that class or have that tag. This is true even though the Match Group is the same.
+   - If a TO snap includes a class or structure tag, then the *preview structure* must be a child of that class or have that tag. 
+   - If a FROM snap includes a class or structure tag, then the *placed structure* has to be a child of that class or have that tag. This is true even though the Match Group is the same.
 
    Exclusions
    - If a TO snap excludes a Snap Type Flag, then the *preview structure* can't be using that Snap Type Flag. Pretty sure if even one bit is a match during the bitmask process, it will be excluded.
-   - If a TO snap excludes a class or tag, then the *preview structure* can't be a child of that class or have that tag.
-   - If a FROM snap excludes a class or tag, then the *placed structure* can't be a child of that class or have that tag. Again, this is true even though the Match Group is the same.
+   - If a TO snap excludes a class or structure tag, then the *preview structure* can't be a child of that class or have that tag.
+   - If a FROM snap excludes a class or structure tag, then the *placed structure* can't be a child of that class or have that tag. Again, this is true even though the Match Group is the same.
 
    If you're testing in the devkit and using DebugStructures, I'm pretty sure the blue DebugStructure spheres will show up during this stage, even if the inclusions/exclusions are preventing a snap from happening.
 
@@ -146,7 +150,7 @@ When you equip a structure to place, the snap system immediately starts running 
  
  At this time the Point Location Offset, Rotation, etc values will dictate the position and orientation of the preview structure.
  
- During the placement process, the "Allowed To Build" function runs on tick on client, which is what turns the preview structure Red or Green and displays messages to the player to indicate if the structure can actually be placed there. That function will also run once on server when the structure attempts to place. As far as I know it does not by default influence snap rules. It's more related to placement rules, like preventing placement inside terrain or other structures (Obstructed), too close to an enemy base, too high above ground, etc.
+ During the placement process, the "Allowed To Build" function runs on tick on client, which is part of the logic turns the preview structure Red or Green and displays messages to the player to indicate if the structure can actually be placed there. That function will also run once on server when the structure attempts to place. As far as I know it does not by default influence snap rules. It's more related to placement rules, like preventing placement inside terrain or other structures (Obstructed), too close to an enemy base, too high above ground, etc.
 
 --------------------------------
 Troubleshooting:
