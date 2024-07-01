@@ -18,6 +18,7 @@ As of 4-23-24, the ModDataAsset bug reported by Quellcrest is still there. Meani
 5. If it’s a structure that has alternative “override” structures, double check that your FROM snaps are good not only on the main structure but the alternative parts as well. Examples would be vanilla rails, sloped walls, triangle roofs.
 
 Note: From some of the testing I’ve done recently I now believe the snap array on the alternate structure has to match up with the primary structure. Even inserting one snap point at the beginning on the alternate structure seems to be enough to break its ability to place.
+Note2: Additional testing and recent issues led me to discover that not only do the snap arrays have to be in sync, their point location offsets have to be the same. It's entirely possible other settings have to match, such as Point Rot Offset, Point Scale Offset. I haven't tested those.
 
 6. Check Placement Encroachment settings. Sometimes even if the encroachment boxes are green in debugstructures mode, the structure won’t place. I had this issue with my “short” doors, and I had to shrink the vertical extent of the encroachment boxes before the doors would actually place, even though the boxes were all green.
 
