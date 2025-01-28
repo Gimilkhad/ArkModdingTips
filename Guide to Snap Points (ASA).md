@@ -62,7 +62,7 @@ Concepts:
 
 6. Structure Inclusions and Exclusions
 
-   There are 2 sets of Inclusion and Exclusion settings that are OUTSIDE of the individual snap point settings. They are defaults on the structure BP itself, and they can trip you up if they're in use and you aren't aware of them. When looking at S+ source for example, internal pipes and wires used some of these settings, and they drove me mad when I was trying to learn how internal parts snapped to things because I wasn't aware of their existence.
+   There are 2 sets of Inclusion and Exclusion settings that are OUTSIDE of the individual snap point settings. They are defaults on the structure BP itself, and they can trip you up if they're in use and you aren't aware of them.
 
    They're called:
     - "Only Allow Structure Classes to/from Attach" (class based only) and 
@@ -214,6 +214,12 @@ I chose to do Option B back in my ASE Arkitect Structure mods, but I also did a 
 
 Other notes:
 --------------------------------
+Snap Overlap Check Radius and Max Snap Loc Range
+- If you create a structure that is larger than normal, you may find yourself needing to adjust these settings for snapping to work.
+- Snap Overlap Check Radius controls the range a placing/preview structure will check for other structures to snap to
+- Once a placed structure is found, Max Snap Loc Range controls the range that the preview structure will check for snap points. Exactly how it does the check is a mystery to me still. In testing and playing with these two range values I've never quite made sense of this one.
+- In general, you'll want both of these range settings to match. I haven't come across a scenario where I've needed to use different values.
+
 IsValidSnapTo and IsValidSnapFrom structure functions
 - These are functions you can implement in your structures, that allow you to graph your own extra rules for whether one snap point can snap to another snap point, or perform other tricks.
 - IsValidSnapTo runs on client, on tick, in every nearby placed structure.
