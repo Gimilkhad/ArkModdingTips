@@ -24,7 +24,7 @@ TO snap - any snap point marked as "Attach to Point" in the snap point settings
 
 Preview structure - the green ghost preview of the structure in your character's hands
 
-Placed structure - any existing structure you can attempt to snap a preview structure to
+Placed structure - any structure that has already been placed in the world, that you can attempt to snap a preview structure to
 
 Bitmask - A type of number matching that compares the individual bits that make up an integer value. This is probably a bad explanation from a pure programming point of view (I have no formal programming education), but for understanding the snap system, this should be a fairly accurate description of what is going on when we get to the Flag and Match Group stuff further down.
 
