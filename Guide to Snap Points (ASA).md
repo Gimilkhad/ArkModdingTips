@@ -216,8 +216,8 @@ Other notes:
 --------------------------------
 Snap Overlap Check Radius and Max Snap Loc Range
 - If you create a structure that is larger than normal, you may find yourself needing to adjust these settings for snapping to work.
-- Snap Overlap Check Radius controls the range a placing/preview structure will check for other structures to snap to
-- Once a placed structure is found, Max Snap Loc Range controls the range that the preview structure will check for snap points. Exactly how it does the check is a mystery to me still. In testing and playing with these two range values I've never quite made sense of this one.
+- Snap Overlap Check Radius controls the range a placing/preview structure will check for a snap target, aka a nearby placed structure to snap to.
+- Once a snap target is found, Max Snap Loc Range controls the range that the preview structure will check for snap points. Exactly how it does the check is a mystery to me still. In testing and playing with these two range values I've never quite made sense of this one.
 - In general, you'll want both of these range settings to match. I haven't come across a scenario where I've needed to use different values.
 
 IsValidSnapTo and IsValidSnapFrom structure functions
