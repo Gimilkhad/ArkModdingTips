@@ -41,7 +41,9 @@ Concepts:
 3. Snap Type Flags
 - Each structure has a "Snap Type Flag" value, which is a special value used to represent what general type of structure part that structure is. Foundations are 2, ceilings are 4, walls are 8, and so on.
 - Every snap point has a "To Point Snap Type Flags" value. During the snapping process this value gets compared to a corresponding Snap Type Flag value in snap points using "Bitmasking", which is explained further down.
-- The "To Point Snap Type Flags" and "To Point Snap Type Exclude Flags" values in a snap point only do anything if that snap point is set up to be a TO snap, and only if it is currently functioning as a TO snap. If it's a FROM snap, the values entered there do nothing. If it's a combination TO and FROM snap, the snap point must be functioning as a TO snap during a snap event or, again, the values do nothing. Just something to keep in mind.
+- "To Point Snap Type Flags": This is an inclusion list for structures, using Snap Type Flags. If the snap is a TO snap, and you only want it to allow foundations to snap to it, set this to 2 (Foundations are Snap Type Flag 2). If you want to include foundations and ceilings, set it to 6 (2 for foundations, 4 for ceilings).
+- "To Point Snap Type Exclude Flags": Similar to above, except it EXCLUDES Snap Type Flags instead of include. Putting a 2 here would exclude foundations from snapping to this snap point but allow almost everything else.
+- If you are familiar with Including and Excluding structures using Structure Tags or classes, this is basically the same thing, you're just using bitmasks instead.
 
 4. Extra Structure Snap Type Flags
 - In addition to the main Snap Type Flag, ASA also added 3 "Extra" snap type flags, stored as a vector. X, Y, and Z can all have a number value which will further "describe" what a structure is to the game's structure system.
