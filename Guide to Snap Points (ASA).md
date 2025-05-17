@@ -125,34 +125,36 @@ When you equip a structure to place, the snap system immediately starts running 
 
 - Tribe/Ownership
 
-- Structure inclusions/exclusions (Only Allow Structure Classes to/from Attach, and Snap to/from Structure Types/Tags to Exclude)
+- Structure inclusions/exclusions (Only Allow Structure Classes to/from Attach, and Snap to/from Structure Types/Tags to Exclude). The system must find a match here to move on to the next step.
 
-- Snap Type Flags - The Snap Type Flag of the preview structure will be compared to the "To Point Snap Type Flags" value in the TO snap points of every nearby placed structure, to see if if there is a match (remember it's comparing bits). If no matches are found within a placed structure, you won't see any blue DebugStructure spheres on that placed structure, and your preview structure will be unable to snap to it.
+- Flag based Inclusions and Exclusions
+   Inclusions
+      - To Point Snap Type Flags - The Snap system will compare the "To Point Snap Type Flags" inside the FROM snaps of a preview structure to the "Snap Type Flag" of nearby placed structures to see if if there is a match (remember it's comparing bits). At the same time, the snap system will compare the "To Point Snap Type Flags" inside the TO snaps of the nearby placed structures to the "Snap Type Flag" of the preview structure. For a structure to snap to another structure, there must be at least one TO snap on the placed structure that allows the preview structure to snap to it, and the preview structure must have at least one FROM snap that allows snapping to the placed structure. If the snap system can't find any matches, you won't see any blue DebugStructure spheres on the placed structure, and your preview structure will be unable to snap to it. The system must find a match here to move on to the next step.
+      - Extra Snap Type Flags - New to ASA. The X value of the FROM snaps in the preview structure will be compared to the X value found in the TO snaps of every nearby placed structure. The Y values will be compared, and the Z values will be compared. From what I can tell, ALL snap type flags have to find a match. If the value is Zero, it means it will always match. So even if one structure has an Extra Snap Type Flag X value of 4, but the other structure has an X value of zero, it will still match. The system must find matches here to move on to the next step.
 
-- Extra Snap Type Flags - New to ASA. The X value of the FROM snaps in the preview structure will be compared to the X value found in the TO snaps of every nearby placed structure. The Y values will be compared, and the Z values will be compared. From what I can tell, ALL snap type flags have to find a match. If the value is Zero, it means it will always match. So even if one structure has an Extra Snap Type Flag X value of 4, but the other structure has an X value of zero, it will still match.
+   Exclusions
+      - To Point Snap Type Exclude Flags - Same as the "To Point Snap Type Flags", except this will make the snap point *exclude* any structure with a matching bit value.
+      - Extra Snap Type Exclude Flags - Same as the "To Point Snap Type Flags", except this will make the snap point *exclude* any structure with a matching bit value.
+
+- Class/Tag based Inclusions and Exclusions
+
+   Inclusions
+   - If a TO snap includes a class or structure tag, then the *preview structure* must be a child of that class or have that tag. 
+   - If a FROM snap includes a class or structure tag, then the *placed structure* has to be a child of that class or have that tag.
+
+   Exclusions
+   - If a TO snap excludes a class or structure tag, then the *preview structure* can't be a child of that class or have that tag.
+   - If a FROM snap excludes a class or structure tag, then the *placed structure* can't be a child of that class or have that tag.
+
+   If you're testing in the devkit and using DebugStructures, I'm pretty sure the blue DebugStructure spheres will show up during this stage, even if the inclusions/exclusions are preventing a snap from happening. Can't remember.
 
 - Snap Point Match Group - if the above checks were passed, then the TO snap points on the placed structure get compared to the FROM snap points on the preview structure. If a TO snap and a FROM snap have a matching Snap Point Match Group value (remember it's comparing bits), then it proceeds to the final step. If no matches are found, I'm pretty sure the blue DebugStructure spheres don't show up (would need to test that to remind myself).
 
 - Extra Snap Point Match Group - same as above but runs through the X, Y, and Z values, comparing X to X, Y to Y, Z to Z. Again, each one has to match, and Zero means it will always match.
 
-- Snap Point Inclusions and Exclusions
-
-   Inclusions
-   - If a TO snap includes a class or structure tag, then the *preview structure* must be a child of that class or have that tag. 
-   - If a FROM snap includes a class or structure tag, then the *placed structure* has to be a child of that class or have that tag. This is true even though the Match Group is the same.
-
-   Exclusions
-   - If a TO snap excludes a Snap Type Flag, then the *preview structure* can't be using that Snap Type Flag. Pretty sure if even one bit is a match during the bitmask process, it will be excluded.
-   - If a TO snap excludes a class or structure tag, then the *preview structure* can't be a child of that class or have that tag.
-   - If a FROM snap excludes a class or structure tag, then the *placed structure* can't be a child of that class or have that tag. Again, this is true even though the Match Group is the same.
-
-   If you're testing in the devkit and using DebugStructures, I'm pretty sure the blue DebugStructure spheres will show up during this stage, even if the inclusions/exclusions are preventing a snap from happening.
-
  If all the above criteria are met, then in theory the preview structure can now snap to the placed structure using any of the valid snap points that were found (based on stuff like player camera angle and cycling with Q). 
  
- At this time the Point Location Offset, Rotation, etc values will dictate the position and orientation of the preview structure.
- 
- During the placement process, the "Allowed To Build" function runs on tick on client, which is part of the logic turns the preview structure Red or Green and displays messages to the player to indicate if the structure can actually be placed there. That function will also run once on server when the structure attempts to place. As far as I know it does not by default influence snap rules. It's more related to placement rules, like preventing placement inside terrain or other structures (Obstructed), too close to an enemy base, too high above ground, etc.
+ At this time the Point Location Offset, Rotation, etc values will dictate the position and orientation of the preview structure. Note that snapping may not occur if the position and rotation values are such that the preview structure would be positioned inside the placed structure.
 
 --------------------------------
 Troubleshooting:
@@ -166,6 +168,7 @@ If you see the lighter blue ball appear, but your structure doesn't move to a ne
 - I encountered this in the old ASE devkit with my square roof caps and pillars. I wanted to make pillars snap downward from each corner of the roof cap, and I was seeing the light blue ball, but the pillar was not actually moving to position. The roof cap was too high above the ground, and the pillar apparently required touching the ground before it would snap. I went into the roof cap, to the four TO snaps I set up for pillars, and enabled that option in each to force no ground requirement. This allowed the pillars to snap even though they were too high to touch the ground.
 
 If your structure isn't snapping to another structure:
+- In many cases the snap system can find valid TO and FROM snap and refuse to use them if doing so would place the preview structure inside the placed structure. So if you're certain you have the flags and the inclusion/exclusion stuff set up properly, you may need to adjust the position and rotation of one or both of the snap points.
 - Make sure the placed structure has collision. No collision means the snap system won't "see" the structure, and you probably won't see the blue snap point spheres if you have DebugStructures turned on.
 - Make sure you don't have some inclusions or exclusions hiding in the structure defaults. These would be the "Only Allow Structure Classes to/from Attach" and "Snap to/from Structure Types/Tags to Exclude" variables I mentioned previously.
 
@@ -229,7 +232,7 @@ IsValidSnapTo and IsValidSnapFrom structure functions
 - Both functions will run at least once on server when the structure is placed. In ASE sometimes they ran multiple times. Not sure about ASA. I haven't checked.
 
 IsAllowedToBuild and IsAllowedToBuildEx
-- These are functions you can implement in your structures, that allow you to graph your own extra rules for whether a structure is allowed to place at the current location. It isn't *directly* related to snapping, but it can be useful to override the built-in placement rules if need to.
+- These are functions you can implement in your structures, that allow you to graph your own extra rules for whether a structure is allowed to place at the current location. It isn't *directly* related to snapping, but it can be useful to override the built-in placement rules if need to. Examples of building rules include Obstructed, Too High Above Ground, Requires Placement in Water, and so on.
 - These functions also fire on tick on the client side, and at least once during placement on server (potentially multiple times on server)
 - If you use the "Ex" version, you have to enable it in the structure defaults
 - It seems you can use both at the same time, but I don't see why anyone would want to. It would likely cause problems to use both, especially if you're doing different things in each.
